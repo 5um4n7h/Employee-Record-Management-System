@@ -29,8 +29,7 @@ void operations(int ch);
 
 void empmenu();
 
-void mgrmenu(d
-             void randep();
+void mgrmenu();
 
 
 //***************************************************************
@@ -227,7 +226,10 @@ void Employee::showData() {
 
 void Employee::searchData(int input) {
     bool flag = false;
-
+    int ch;
+    char nm[100];
+    int input;
+    long int phn;
     fstream file;
     file.open(fileName, ios::in | ios::binary);
 
@@ -618,8 +620,7 @@ bool isEmpty(ifstream &file) {
 void operations(int ch) {
     //system("cls"); !!causing error
     int dp;
-    Employee Ep;
-    fstream Report("Report_generated.txt");
+
     Employee *ptr = NULL;
     Employee filedata;
 
@@ -656,9 +657,10 @@ void operations(int ch) {
             filedata.readFile();
             break;
         case 3: //search records
-            cout << "\nPlease Enter Employee Unique ID That you Want to Search its Record : ";
-            cin >> search;
-            filedata.searchData(search);
+            //cout << "\nPlease Enter Employee Unique ID That you Want to Search its Record : ";
+            //
+            // cin >> search;
+            filedata.searchData();
             break;
         case 4: //update records
             cout << "\tPlease Enter Employee Unique ID That you Want to Update its Record : ";
@@ -677,23 +679,26 @@ void operations(int ch) {
             cout << "Enter the Depart name of which you want the report\n";
             cout << "1.R&D\n2.Testing\n3.Training\n4Sales\n5.Accounts\n";
             cin >> dp;
-            switch (dp) {
-                case 1:
-                    Ep.randddep();
-                    break;
-                case 2:
-                    Ep.testdep();
-                    break;
-                case 3:
-                    Ep.traindep();
-                    break;
-                case 4:
-                    Ep.salesdep();
-                    break;
-                case 5:
-                    Ep.accdep();
-                    break;
-
+            while (1) {
+                switch (dp) {
+                    case 1:
+                        filedata.randddep();
+                        break;
+                    case 2:
+                        // Ep.testdep();
+                        break;
+                    case 3:
+                        // Ep.traindep();
+                        break;
+                    case 4:
+                        // Ep.salesdep();
+                        break;
+                    case 5:
+                        //  Ep.accdep();
+                        break;
+                    default:
+                        cout << "Please give correct input " << endl;
+                }
             }
 
 
@@ -736,7 +741,18 @@ int main() {
 
 void Employee::randddep() {
     ifstream file;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal= 0, lowsal = 0;
+    int x, i;
+    char title[20] = "R and D Department";
     file.open(fileName, ios::in | ios::binary);
+    fstream report;
+    report.open("report_generated.txt", ios::out); //writes to the output file
+    //report.getline(title,25,'\n');
+    //if(report.fail())
+    //    break;
+    //x=strlen(title);
+    report << title;
+    report << endl;
 
     if (!file) {
         cout << "\tFile can not Open";
@@ -746,16 +762,62 @@ void Employee::randddep() {
         } else {
             file.read((char *) this, sizeof(*this));
 
+            report << "\n\nEmployee ID\tName\tAge\tGender\tRole\tDepartment\tSalary\tPhoneno\tCity\n";
+
             while (!file.eof()) {
-                showData();
+
+                if (!strcmp(department, "R&D")) {
+                    noofemployee++;
+
+                    report << id << "\t" << name << "\t" << age << "\t" << gender << "\t" << post << "\t" << department
+                           << "\t" << salary
+                           << "\t" << phoneno << "\t" << city << "\n";
+
+                    ttlsal += salary;
+                    ttlage += ttlage;
+                }
+                if (!strcmp(gender, "M")) {
+                    maleemp++;
+                } else {
+                    femaleemp++;
+                }
+
+                if (noofemployee == 1) {
+                    highsal = salary;
+                    lowsal = salary;
+                }
+                if (salary > highsal) {
+                    highsal = salary;
+                }
+                if (salary < lowsal) {
+                    lowsal = salary;
+                }
                 file.read((char *) this, sizeof(*this));
             }
+            report << endl;
+            report << "Total no of employees = " << noofemployee;
+            report << endl;
+            report << "no of male employees = " << maleemp;
+            report << endl;
+            report << "no of female employees = " << femaleemp << endl;
+            report << "Average salary" << ttlsal / noofemployee << endl;
+            report << "Average Age = " << ttlage / noofemployee << endl;
+            report << "Highest Salary = " << highsal << endl;
+            report << "Lowest Salary = " << lowsal << endl;
+            report.close();
             file.close();
+            cout<<"Report generated successfully !";
+            return;
+
         }
     }
+
 }
 
+void Employee::testdep() {}
 
+void Employee::traindep() {}
 
+void Employee::accdep() {}
 
-
+void Employee::salesdep() {}
