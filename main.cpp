@@ -22,9 +22,8 @@ bool validateInput();               // fuction that Validate User Input & Prints
 bool isEmpty(ifstream &file);       // function that checks file is empty or not.
 
 
-void loginprocess();
+int loginprocess();
 
-void loginerror();
 
 void operations(int ch);
 
@@ -32,7 +31,6 @@ void empmenu();
 
 void mgrmenu();
 
-void hrmenu();
 
 //***************************************************************
 //                   GLOBAL VARIABLES
@@ -50,8 +48,9 @@ bool flag;
 //****************************************************************
 class Employee {
 private:
-    int id;
-    char name[100], post[100], department[100];
+    int id, age;
+    long int phoneno;
+    char name[100], post[100], department[100], gender[10], city[500];
     double salary;
 
 public:
@@ -101,28 +100,57 @@ void Employee::getData() {
 
 
     label3:
-    cout << "\tEnter Employee Post : ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.getline(post, 100);
+    cout << "\tEnter Employee Gender : ";
+    cin >> gender;
     flag = validateInput();
     if (flag)
         goto label3;
 
-
     label4:
-    cout << "\tEnter Employee Department : ";
-    cin.getline(department, 100);
+    cout << "\tEnter Employee Age : ";
+    cin >> age;
     flag = validateInput();
     if (flag)
         goto label4;
 
 
     label5:
+    cout << "\tEnter Employee Role : ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.getline(post, 100);
+    flag = validateInput();
+    if (flag)
+        goto label5;
+
+
+    label6:
+    cout << "\tEnter Employee Department : ";
+    cin.getline(department, 100);
+    flag = validateInput();
+    if (flag)
+        goto label6;
+
+
+    label7:
     cout << "\tEnter Employee Salary : ";
     cin >> salary;
     flag = validateInput();
     if (flag)
-        goto label5;
+        goto label7;
+
+    label8:
+    cout << "\nEnter Employee Phone number : ";
+    cin >> phoneno;
+    flag = validateInput();
+    if (flag)
+        goto label8;
+
+    label9:
+    cout << "\nEnter Employee City : ";
+    cin >> city;
+    flag = validateInput();
+    if (flag)
+        goto label9;
 }
 
 void Employee::writeFile() {
@@ -151,10 +179,10 @@ void Employee::readFile() {
         cout << "\tFile can not Open";
     } else {
         if (isEmpty(file)) {
-            cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
         } else {
             file.read((char *) this, sizeof(*this));
-
+            cout << "\n\nEmployee ID\tName\tAge\tGender\tRole\tDepartment\tSalary\tPhoneno\tCity\n";
             while (!file.eof()) {
                 showData();
                 file.read((char *) this, sizeof(*this));
@@ -166,20 +194,25 @@ void Employee::readFile() {
 }
 
 void Employee::showData() {
-    cout << "\n\tEmployee Name is : ";
-    cout << name << endl;
 
-    cout << "\tEmployee ID is : ";
-    cout << id << endl;
 
-    cout << "\tEmployee post is : ";
-    cout << post << endl;
+    cout << id << "\t" << name << "\t" << age << "\t" << gender << "\t" << post << "\t" << department << "\t" << salary
+         << "\t" << phoneno << "\t" << city << "\n2"
+                                               "";
 
-    cout << "\tEmployee Department is : ";
-    cout << department << endl;
+//    cout << "\tEmployee ID is : ";
+//    cout << id << endl;
+//
+//    cout << "\tEmployee post is : ";
+//    cout << post << endl;
+//
+//    cout << "\tEmployee Department is : ";
+//    cout << department << endl;
+//
+//    cout << "\tEmployee Salary is : ";
+//    cout << salary << endl;
 
-    cout << "\tEmployee Salary is : ";
-    cout << salary << endl;
+
 }
 
 void Employee::searchData(int input) {
@@ -347,11 +380,20 @@ void Employee::sortData() {
 
         cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
 
-        for (int i = 0; i < size; i++) {
-            ptr[i].showData();
-        }
+                for (int i = 0; i < size; i++) {
+                    ptr[i].showData();
 
-        delete[] ptr;   // Explicitly Delete Memory Location From Heap.
+                    break;
+
+                }
+
+
+                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
+                break;
+            }
+            default:
+                cout << "\n Invalid Input ! Please try again !";
+        }
     }
 }
 
@@ -359,11 +401,11 @@ void Employee::sortData() {
 //***************************************************************
 //            FUNCTION DEFINATION USED IN PROJECTS
 //****************************************************************
-void loginprocess() {
+int loginprocess() {
 
     string uname, pass;
     int ip;
-    system("cls");
+    // system("cls");  !! causing error
     cout << "\n\n <================= Employee Record Management System =================>\n";
     cout << "           .--.                   .---.\n"
             "       .---|__|           .-.     |~~~|\n"
@@ -376,7 +418,7 @@ void loginprocess() {
             "    |  |===|--|   \\.'\\|===|~|--|%%|~~~|--|\n"
             "    ^--^---'--^    `-'`---^-^--^--^---'--'";
 
-    cout << "\n 1. Employee Login \n 2. Manager Log in \n 3. HR Manager Login \n 4.Exit \n";
+    cout << "\n 1. Employee Login \n 2. Manager Log in \n  \n 3.Exit \n";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
     cout << "Enter your choice :  \n";
     cin >> logintype;
@@ -392,7 +434,19 @@ void loginprocess() {
 
             if (uname != "emp001" || pass != "emp001") {
                 cout << "\n Wrong username or password !";
-                loginerror();
+                int ip;
+                cout << "\n1.Try again\n2.Exit\nPlease enter your choice : ";
+                cin >> ip;
+                switch (ip) {
+                    case 1:
+                        loginprocess();
+                        break;
+                    case 2:
+                        exit(0);
+                    default:
+                        cout << "\n Invalid input !\n";
+                        loginprocess();
+                }
                 break;
             } else
                 // empmenu();
@@ -404,28 +458,30 @@ void loginprocess() {
             cout << "\nEnter Manger  username : ";
             cin >> uname;
             cout << "\nEnter Manager  password : ";
+            cin >> pass;
             if (uname != "mgr001" || pass != "mgr001") {
                 cout << "\n Wrong username or password !";
-                loginerror();
+                int ip;
+                cout << "\n1.Try again\n2.Exit\nPlease enter your choice : ";
+                cin >> ip;
+                switch (ip) {
+                    case 1:
+                        loginprocess();
+                        break;
+                    case 2:
+                        exit(0);
+                    default:
+                        cout << "\n Invalid input !\n";
+                        loginprocess();
+                }
+
             } else
-                //mgrmenu();
                 cout << "\n Login successful !";
             break;
 
         }
-        case 3: {
-            cout << "\n HR manager Login\n";
-            cout << "\nEnter HR Manger  username : ";
-            cin >> uname;
-            cout << "\nEnter HR Manager  password : ";
-            if (uname != "hrm001" || pass != "hrm001") {
-                cout << "\n Wrong username or password !";
-                loginerror();
-            } else
-                //                hrmenu();
-                cout << "\n Login successful !";
-        }
-        case 4:
+
+        case 3:
             cout << "Thank you for using the system !";
             exit(0);
 
@@ -434,30 +490,13 @@ void loginprocess() {
             loginprocess();
     }
 
+    return 1;
 
 }
 
 
-void loginerror() {
-    int ip;
-    cout << "\n1.Try again\n2.Exit\nPlease enter your choice : ";
-    cin >> ip;
-    switch (ip) {
-        case 1:
-            loginprocess();
-            break;
-        case 2:
-            exit(0);
-        default:
-            cout << "\n Invalid input, Please try again !\n";
-            loginerror();
-    }
-
-}
-
-
-void hrmenu() {
-    system("cls");
+void mgrmenu() {
+    // system("cls"); causing errors
     int choice;
     bool flag;
     cout << "\n\n <================= Employee Managment System =================>\n\n";
@@ -472,32 +511,45 @@ void hrmenu() {
     cout << "\t8 : Logout \n";
     cout << "\tEnter Your Choice : \n\n\n";
     cin >> choice;
+    operations(choice);
+    mgrmenu();
+
+
+}
+
+
+void empmenu() {
+
+    int choice;
+    cout << "\n\n <================= Employee Managment System =================>\n\n";
+    cout << "\tPlease Select Your Choice :- \n";
+    cout << "\t1 : View All Employees Records\n";
+    cout << "\t2 : Search Employees Records\n";
+    cout << "\t3 : Sort Employee Records\n";
+    cout << "\t4 : Logout \n";
+    cout << "\tEnter Your Choice : \n\n\n";
+    cin >> choice;
+
     switch (choice) {
         case 1:
-            //TODO
+            operations(2);
             break;
         case 2:
-            //TODO
+            operations(3);
+            break;
+        case 3:
+            operations(6);
+            break;
+        case 4:
+            loginprocess();
             break;
         default:
-            cout << "\nInvalid input\n";
-            hrmenu();
+            cout << "\nInvalid choice !";
+            empmenu();
+            break;
 
     }
 
-    // flag = validateInput();
-
-
-}
-
-void mgrmenu() {
-    //TODO
-
-}
-
-void empmenu() {
-    cout << "\n\n<============Search employee record by ID============>";
-    operations(3);
 
 }
 
@@ -538,9 +590,10 @@ bool isEmpty(ifstream &file) {
 
 
 void operations(int ch) {
-    system("cls");
+    //system("cls"); !!causing error
     Employee *ptr = NULL;
     Employee filedata;
+    fstream Report;
     switch (ch) {
         case 1: //addrecords
         label:
@@ -590,8 +643,14 @@ void operations(int ch) {
         case 6: //sort records
             filedata.sortData();
             break;
-        case 7: //exit
+        case 7: //report generation
+
+            Report.open("Report.txt", ios::out);
+            //TODO assigned to Navaneeth
+            break;
+        case 8:
             cout << "\n\tThank You For Using This Application\n";
+            exit(0);
             check = false;
             break; //invalid input
         default:
@@ -609,16 +668,14 @@ void operations(int ch) {
 int main() {
 
 
-    loginprocess();
+    int flag = loginprocess();
     switch (logintype) {
         case 1:
             empmenu();
             break;
         case 2:
+            //  cout<<"case 2 called";
             mgrmenu();
-            break;
-        case 3:
-            hrmenu();
             break;
         default:
             cout << "\nError occurred !";
