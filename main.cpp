@@ -346,6 +346,7 @@ void Employee::deleteData(int input) {
 }
 
 void Employee::sortData() {
+    int ch;
     int size, fileSize, objSize, position;
     Employee *ptr = NULL;
 
@@ -355,30 +356,44 @@ void Employee::sortData() {
     if (isEmpty(file)) {
         cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
     } else {
-        file.seekg(0, ios::end);
+        cout << "\n Enter the data on which records are to be sorted:";
 
-        fileSize = static_cast<int>(file.tellg());
-        objSize = static_cast<int>(sizeof(*this));
-        size = fileSize / objSize;
+        cout << "\n 1.Employee ID\n 2.Name \n 3.Phone number \n 4.Age\n 5.Salary\n";
+        cin >> ch;
 
-        ptr = new Employee[size];
+        switch (ch) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5: {
+                file.seekg(0, ios::end);
+                fileSize = static_cast<int>(file.tellg());
+                objSize = static_cast<int>(sizeof(*this));
+                size = fileSize / objSize;
 
-        file.seekg(0, ios::beg);
+                ptr = new Employee[size];
 
-        for (int i = 0; i < size; i++) {
-            file.read((char *) &ptr[i], sizeof(*this));
-        }
-        file.close();
+                file.seekg(0, ios::beg);
 
-        for (int i = 0; i < size; i++) {
-            for (int j = i + 1; j < size; j++) {
-                if (ptr[i].salary < ptr[j].salary) {
-                    swap(ptr[i], ptr[j]);
+                for (int i = 0; i < size; i++) {
+                    file.read((char *) &ptr[i], sizeof(*this));
                 }
-            }
-        }
+                file.close();
 
-        cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+                for (int i = 0; i < size; i++) {
+                    for (int j = i + 1; j < size; j++) {
+                        if (ptr[i].salary < ptr[j].salary) {
+                            swap(ptr[i], ptr[j]);
+                        }
+                    }
+                }
+
+                cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
 
                 for (int i = 0; i < size; i++) {
                     ptr[i].showData();
@@ -498,6 +513,7 @@ int loginprocess() {
 void mgrmenu() {
     // system("cls"); causing errors
     int choice;
+
     bool flag;
     cout << "\n\n <================= Employee Managment System =================>\n\n";
     cout << "\tPlease Select Your Choice :- \n";
@@ -622,6 +638,7 @@ void operations(int ch) {
                 break;
             }
         case 2: //view all records
+
             cout << "\n\n\t=============== Employee Details ==================\n\n";
             filedata.readFile();
             break;
