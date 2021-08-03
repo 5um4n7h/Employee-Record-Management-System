@@ -29,7 +29,8 @@ void operations(int ch);
 
 void empmenu();
 
-void mgrmenu();
+void mgrmenu(d
+             void randep();
 
 
 //***************************************************************
@@ -72,7 +73,16 @@ public:
     void searchData(int input); // function to search Data from file.
     void updateData(int input); // function to Update Data from file.
     void deleteData(int input); // function to Delete Data from file.
-    void sortData();            // function to Sorts Employees Data in Desending Order w.r.t Salary.
+    void sortData();// function to Sorts Employees Data in Desending Order w.r.t Salary.
+    void randddep();
+
+    void testdep();
+
+    void traindep();
+
+    void salesdep();
+
+    void accdep();
 };
 
 
@@ -165,7 +175,7 @@ void Employee::writeFile() {
         file.close();
 
         if (!file.good()) {
-            // For Check Any Error After Writing the file. For Example File Memory Full, File Format Errors. 
+            // For Check Any Error After Writing the file. For Example File Memory Full, File Format Errors.
             cout << "\tError occurred at writing time!" << endl;
         }
     }
@@ -200,17 +210,17 @@ void Employee::showData() {
          << "\t" << phoneno << "\t" << city << "\n2"
                                                "";
 
-//    cout << "\tEmployee ID is : ";
-//    cout << id << endl;
-//
-//    cout << "\tEmployee post is : ";
-//    cout << post << endl;
-//
-//    cout << "\tEmployee Department is : ";
-//    cout << department << endl;
-//
-//    cout << "\tEmployee Salary is : ";
-//    cout << salary << endl;
+    //    cout << "\tEmployee ID is : ";
+    //    cout << id << endl;
+    //
+    //    cout << "\tEmployee post is : ";
+    //    cout << post << endl;
+    //
+    //    cout << "\tEmployee Department is : ";
+    //    cout << department << endl;
+    //
+    //    cout << "\tEmployee Salary is : ";
+    //    cout << salary << endl;
 
 
 }
@@ -584,7 +594,7 @@ bool validateInput() {
     if (cin.fail()) {
         // Restore input stream
         cin.clear();
-        // Clear The All Previous Input Before the '\n' Character 
+        // Clear The All Previous Input Before the '\n' Character
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         // Throwing Error and Again Input Value From User
@@ -607,9 +617,12 @@ bool isEmpty(ifstream &file) {
 
 void operations(int ch) {
     //system("cls"); !!causing error
+    int dp;
+    Employee Ep;
+    fstream Report("Report_generated.txt");
     Employee *ptr = NULL;
     Employee filedata;
-    fstream Report;
+
     switch (ch) {
         case 1: //addrecords
         label:
@@ -661,9 +674,29 @@ void operations(int ch) {
             filedata.sortData();
             break;
         case 7: //report generation
+            cout << "Enter the Depart name of which you want the report\n";
+            cout << "1.R&D\n2.Testing\n3.Training\n4Sales\n5.Accounts\n";
+            cin >> dp;
+            switch (dp) {
+                case 1:
+                    Ep.randddep();
+                    break;
+                case 2:
+                    Ep.testdep();
+                    break;
+                case 3:
+                    Ep.traindep();
+                    break;
+                case 4:
+                    Ep.salesdep();
+                    break;
+                case 5:
+                    Ep.accdep();
+                    break;
 
-            Report.open("Report.txt", ios::out);
-            //TODO assigned to Navaneeth
+            }
+
+
             break;
         case 8:
             cout << "\n\tThank You For Using This Application\n";
@@ -700,6 +733,28 @@ int main() {
 
     }
 }
+
+void Employee::randddep() {
+    ifstream file;
+    file.open(fileName, ios::in | ios::binary);
+
+    if (!file) {
+        cout << "\tFile can not Open";
+    } else {
+        if (isEmpty(file)) {
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+        } else {
+            file.read((char *) this, sizeof(*this));
+
+            while (!file.eof()) {
+                showData();
+                file.read((char *) this, sizeof(*this));
+            }
+            file.close();
+        }
+    }
+}
+
 
 
 
