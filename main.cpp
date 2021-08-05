@@ -70,7 +70,7 @@ public:
     void writeFile();           // function to Write Employees Records in a file that get From User.
     void readFile();            // function to Read Employees Records from a file.
     void showData();            // function to Print All Employees Records that Read From a File.
-    void searchData(int input); // function to search Data from file.
+    void searchData(); // function to search Data from file.
     void updateData(int input); // function to Update Data from file.
     void deleteData(int input); // function to Delete Data from file.
     void sortData();// function to Sorts Employees Data in Desending Order w.r.t Salary.
@@ -226,7 +226,7 @@ void Employee::showData() {
 
 }
 
-void Employee::searchData(int input) {
+void Employee::searchData() {
     bool flag = false;
     int ch;
     char nm[100];
@@ -234,26 +234,86 @@ void Employee::searchData(int input) {
     long int phn;
     fstream file;
     file.open(fileName, ios::in | ios::binary);
+    cout << "Enter the key on which you want to search\n";
+    cout << "1.Name \n 2.ID \n 3.Phone number\n";
+    cin >> ch;
+    switch (ch) {
+        case 1: {
+            cout<<"Enter the name:";
+            cin>>nm;
+            if (!file) {
+                cout << "\tFile Cannot be Open";
+            } else {
+                file.read((char *) this, sizeof(*this));
+                while (!file.eof()) {
+                    if (!strcmp(nm,name)) {
+                        showData();
+                        flag = true;
+                    }
+                    file.read((char *) this, sizeof(*this));
+                }
 
-    if (!file) {
-        cout << "\tFile Cannot be Open";
-    } else {
-        file.read((char *) this, sizeof(*this));
-        while (!file.eof()) {
-            if (input == id) {
-                showData();
-                flag = true;
+                file.close();
+
+                if (!flag) {
+                    cout << "\tRecord For This ID Does Not Exist";
+                }
             }
+
+        }
+        break;
+        case 2:
+            cout << "Enter the ID:";
+            cin >> input;
+
+        if (!file) {
+            cout << "\tFile Cannot be Open";
+        } else {
             file.read((char *) this, sizeof(*this));
+            while (!file.eof()) {
+                if (input == id) {
+                    showData();
+                    flag = true;
+                }
+                file.read((char *) this, sizeof(*this));
+            }
+
+            file.close();
+
+            if (!flag) {
+                cout << "\tRecord For This ID Does Not Exist";
+            }
         }
 
-        file.close();
+        break;
+        case 3:{
+            cout<<"Enter the phone number:";
+            cin>>phn;
+            if (!file) {
+                cout << "\tFile Cannot be Open";
+            } else {
+                file.read((char *) this, sizeof(*this));
+                while (!file.eof()) {
+                    if(phn == phoneno) {
+                        showData();
+                        flag = true;
+                    }
+                    file.read((char *) this, sizeof(*this));
+                }
 
-        if (!flag) {
-            cout << "\tRecord For This ID Does Not Exist";
+                file.close();
+
+                if (!flag) {
+                    cout << "\tRecord For This ID Does Not Exist";
+                }
+            }
+
         }
+            break;
+
     }
 }
+
 
 void Employee::updateData(int input) {
     bool flag = false;
@@ -372,7 +432,7 @@ void Employee::sortData() {
     } else {
         cout << "\n Enter the data on which records are to be sorted:";
 
-        cout << "\n 1.Employee ID\n 2.Name \n 3.Phone number \n 4.Age\n 5.Salary\n";
+        cout << "\n 1.Employee ID\n 2.Name \n 3.Age\n 4.Salary\n";
         cin >> ch;
 
         switch (ch) {
