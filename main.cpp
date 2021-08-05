@@ -7,6 +7,7 @@
 #include <cstring>
 #include <conio.h>
 #include<windows.h>
+#include <iomanip>
 // It is Used For C String Handling.
 
 using namespace std;
@@ -191,7 +192,8 @@ void Employee::readFile() {
             cout << "\n\tYour File is Empty! No Record is Available to Show\n";
         } else {
             file.read((char *) this, sizeof(*this));
-            cout << "\n\nEmployee ID\tName\tAge\tGender\tRole\tDepartment\tSalary\tPhoneno\tCity\n";
+            cout <<setw(12)<<left<<"Employee ID"<<setw(25)<<left<<"Name"<<setw(5)<<left<<"Age"<<setw(8)<<left<<"Gender"<<setw(20)<<left<<"Role"<<setw(15)<<left<<"Department"<<setw(10)<<"Salary"<<setw(15)<<"Phoneno"<<setw(14)<<"City";
+            cout<<endl;
             while (!file.eof()) {
                 showData();
                 file.read((char *) this, sizeof(*this));
@@ -205,9 +207,9 @@ void Employee::readFile() {
 void Employee::showData() {
 
 
-    cout << id << "\t" << name << "\t" << age << "\t" << gender << "\t" << post << "\t" << department << "\t" << salary
-         << "\t" << phoneno << "\t" << city << "\n2"
-                                               "";
+    cout <<setw(12)<<left<< id <<setw(25)<<left<< name << setw(5)<<left<< age << setw(8)<<left << gender <<setw(20)<<left << post << setw(15)<<left << department << setw(10)<< salary
+         << setw(14)<< phoneno << setw(15) << city<<endl;
+
 
     //    cout << "\tEmployee ID is : ";
     //    cout << id << endl;
@@ -375,14 +377,116 @@ void Employee::sortData() {
 
         switch (ch) {
             case 1:
+            {
+                file.seekg(0, ios::end);
+                fileSize = static_cast<int>(file.tellg());
+                objSize = static_cast<int>(sizeof(*this));
+                size = fileSize / objSize;
+
+                ptr = new Employee[size];
+
+                file.seekg(0, ios::beg);
+
+                for (int i = 0; i < size; i++) {
+                    file.read((char *) &ptr[i], sizeof(*this));
+                }
+                file.close();
+
+                for (int i = 0; i < size; i++) {
+                    for (int j = i + 1; j < size; j++) {
+                        if (ptr[i].id > ptr[j].id) {
+                            swap(ptr[i], ptr[j]);
+                        }
+                    }
+                }
+
+                cout << "\n\n\t======== Sorted Employee Details With Respect to EMPLOYEE ID ========\n\n";
+
+                for (int i = 0; i < size; i++) {
+                    ptr[i].showData();
+
+                    break;
+
+                }
+
+
+                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
-            case 2:
+            }
+            case 2:/*{
+                file.seekg(0, ios::end);
+                fileSize = static_cast<int>(file.tellg());
+                objSize = static_cast<int>(sizeof(*this));
+                size = fileSize / objSize;
+
+                ptr = new Employee[size];
+
+                file.seekg(0, ios::beg);
+
+                for (int i = 0; i < size; i++) {
+                    file.read((char *) &ptr[i], sizeof(*this));
+                }
+                file.close();
+
+                for (int i = 0; i < size; i++) {
+                    for (int j = i + 1; j < size; j++) {
+                        if (ptr[i].name > ptr[j].name) {
+                            swap(ptr[i], ptr[j]);
+                        }
+                    }
+                }
+
+                cout << "\n\n\t======== Sorted Employee Details With Respect to Name ========\n\n";
+
+                for (int i = 0; i < size; i++) {
+                    ptr[i].showData();
+
+                    break;
+
+                }
+
+
+                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
-            case 3:
+            }*/
+            case 3:{
+                file.seekg(0, ios::end);
+                fileSize = static_cast<int>(file.tellg());
+                objSize = static_cast<int>(sizeof (*this));
+                size = fileSize / objSize;
+
+                ptr = new Employee[size];
+
+                file.seekg(0, ios::beg);
+
+                for (int i = 0; i < size; i++) {
+                    file.read((char *) &ptr[i], sizeof(*this));
+                }
+                file.close();
+
+                for (int i = 0; i < size; i++) {
+                    for (int j = i + 1; j < size; j++) {
+                        if (ptr[i].age > ptr[j].age) {
+                            swap(ptr[i], ptr[j]);
+                        }
+                    }
+                }
+
+                cout << "\n\n\t======== Sorted Employee Details With Respect to Age ========\n\n";
+
+                for (int i = 0; i < size; i++) {
+                    ptr[i].showData();
+
+                    break;
+
+                }
+
+
+                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
-            case 4:
-                break;
-            case 5: {
+            }
+
+            case 4: {
                 file.seekg(0, ios::end);
                 fileSize = static_cast<int>(file.tellg());
                 objSize = static_cast<int>(sizeof(*this));
@@ -679,7 +783,7 @@ void operations(int ch) {
             cout << "Enter the Depart name of which you want the report\n";
             cout << "1.R&D\n2.Testing\n3.Training\n4Sales\n5.Accounts\n";
             cin >> dp;
-            while (1) {
+
                 switch (dp) {
                     case 1:
                         filedata.randddep();
@@ -699,7 +803,7 @@ void operations(int ch) {
                     default:
                         cout << "Please give correct input " << endl;
                 }
-            }
+
 
 
             break;
@@ -770,28 +874,30 @@ void Employee::randddep() {
                     noofemployee++;
 
                     report << id << "\t" << name << "\t" << age << "\t" << gender << "\t" << post << "\t" << department
-                           << "\t" << salary
-                           << "\t" << phoneno << "\t" << city << "\n";
+                    << "\t" << salary
+                    << "\t" << phoneno << "\t" << city << "\n";
 
                     ttlsal += salary;
-                    ttlage += ttlage;
-                }
-                if (!strcmp(gender, "M")) {
-                    maleemp++;
-                } else {
-                    femaleemp++;
+                    ttlage += age;
+
+                    if (!strcmp(gender, "M")) {
+                        maleemp++;
+                    } else {
+                        femaleemp++;
+                    }
+
+                    if (noofemployee == 1) {
+                        highsal = salary;
+                        lowsal = salary;
+                    }
+                    if (salary > highsal) {
+                        highsal = salary;
+                    }
+                    if (salary < lowsal) {
+                        lowsal = salary;
+                    }
                 }
 
-                if (noofemployee == 1) {
-                    highsal = salary;
-                    lowsal = salary;
-                }
-                if (salary > highsal) {
-                    highsal = salary;
-                }
-                if (salary < lowsal) {
-                    lowsal = salary;
-                }
                 file.read((char *) this, sizeof(*this));
             }
             report << endl;
@@ -808,11 +914,13 @@ void Employee::randddep() {
             file.close();
             cout<<"Report generated successfully !";
             return;
+        }
+
 
         }
     }
 
-}
+
 
 void Employee::testdep() {}
 
