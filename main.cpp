@@ -923,7 +923,7 @@ void operations(int ch) {
             break;
         case 7: //report generation
             cout << "Enter the Depart name of which you want the report\n";
-            cout << "1.R&D\n2.Testing\n3.Training\n4Sales\n5.Accounts\n";
+            cout << "1.R&D\n2.Testing\n3.Training\n4.Sales\n5.Accounts\n";
             cin >> dp;
 
             switch (dp) {
