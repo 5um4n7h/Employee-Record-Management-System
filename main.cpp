@@ -94,6 +94,7 @@ public:
 //           DEFINATION OF MEMBER FUNCTIONS OF CLASS
 //****************************************************************
 void Employee::getData() {
+    int idinp;
     bool flag = false;
 
     label1:
@@ -107,12 +108,13 @@ void Employee::getData() {
 
     label2:
     cout << "\tEnter Employee Unique ID : ";
-    cin >> id;
-    int x= duplid(id);
+    cin >> idinp;
+    int x= duplid(idinp);
+    cout<<"Returned to getData()";
     if(x==1){
         operations(1);
     }
-    flag = validateInput();
+   // flag = validateInput();
     if (flag)
         goto label2;
 
@@ -1035,11 +1037,14 @@ int Employee::duplid(int ids) {
         while (!file.eof()) {
             if (ids == id) {
                 cout<<"Employee with this ID already exist\n Please try other ID\n";
+                file.close();
                 return 1;
             }
+            file.read((char *) this, sizeof(*this));
         }
 
     }
+    file.close();
     return 0;
 }
 
