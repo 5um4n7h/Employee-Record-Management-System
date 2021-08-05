@@ -33,10 +33,11 @@ void empmenu();
 void mgrmenu();
 
 
+
 //***************************************************************
 //                   GLOBAL VARIABLES
 //****************************************************************
-const char *fileName = "file.dat";
+const char *fileName = "C://ERMS//file.dat";
 int logintype;
 bool check = true;
 int search;
@@ -50,7 +51,7 @@ bool flag;
 class Employee {
 private:
     int id, age;
-    long int phoneno;
+    long long int phoneno;
     char name[100], post[100], department[100], gender[10], city[500];
     double salary;
 
@@ -83,6 +84,8 @@ public:
     void salesdep();
 
     void accdep();
+
+    void payslip_generator();
 };
 
 
@@ -192,8 +195,10 @@ void Employee::readFile() {
             cout << "\n\tYour File is Empty! No Record is Available to Show\n";
         } else {
             file.read((char *) this, sizeof(*this));
-            cout <<setw(12)<<left<<"Employee ID"<<setw(25)<<left<<"Name"<<setw(5)<<left<<"Age"<<setw(8)<<left<<"Gender"<<setw(20)<<left<<"Role"<<setw(15)<<left<<"Department"<<setw(10)<<"Salary"<<setw(15)<<"Phoneno"<<setw(14)<<"City";
-            cout<<endl;
+            cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                 << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                 << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            cout << endl;
             while (!file.eof()) {
                 showData();
                 file.read((char *) this, sizeof(*this));
@@ -207,8 +212,9 @@ void Employee::readFile() {
 void Employee::showData() {
 
 
-    cout <<setw(12)<<left<< id <<setw(25)<<left<< name << setw(5)<<left<< age << setw(8)<<left << gender <<setw(20)<<left << post << setw(15)<<left << department << setw(10)<< salary
-         << setw(14)<< phoneno << setw(15) << city<<endl;
+    cout << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8) << left << gender
+         << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+         << setw(14) << phoneno << setw(15) << city << endl;
 
 
     //    cout << "\tEmployee ID is : ";
@@ -239,14 +245,17 @@ void Employee::searchData() {
     cin >> ch;
     switch (ch) {
         case 1: {
-            cout<<"Enter the name:";
-            cin>>nm;
+            cout << "Enter the name:";
+            cin >> nm;
             if (!file) {
                 cout << "\tFile Cannot be Open";
             } else {
                 file.read((char *) this, sizeof(*this));
+                cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                     << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                     << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City" << "\n";
                 while (!file.eof()) {
-                    if (!strcmp(nm,name)) {
+                    if (!strcmp(nm, name)) {
                         showData();
                         flag = true;
                     }
@@ -261,40 +270,49 @@ void Employee::searchData() {
             }
 
         }
-        break;
+            break;
         case 2:
             cout << "Enter the ID:";
             cin >> input;
 
-        if (!file) {
-            cout << "\tFile Cannot be Open";
-        } else {
-            file.read((char *) this, sizeof(*this));
-            while (!file.eof()) {
-                if (input == id) {
-                    showData();
-                    flag = true;
-                }
-                file.read((char *) this, sizeof(*this));
-            }
-
-            file.close();
-
-            if (!flag) {
-                cout << "\tRecord For This ID Does Not Exist";
-            }
-        }
-
-        break;
-        case 3:{
-            cout<<"Enter the phone number:";
-            cin>>phn;
             if (!file) {
                 cout << "\tFile Cannot be Open";
             } else {
                 file.read((char *) this, sizeof(*this));
+                cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                     << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                     << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                cout << endl;
                 while (!file.eof()) {
-                    if(phn == phoneno) {
+                    if (input == id) {
+                        showData();
+                        flag = true;
+                    }
+                    file.read((char *) this, sizeof(*this));
+                }
+
+                file.close();
+
+                if (!flag) {
+                    cout << "\tRecord For This ID Does Not Exist";
+                }
+            }
+
+            break;
+        case 3: {
+            cout << "Enter the phone number:";
+            cin >> phn;
+            if (!file) {
+                cout << "\tFile Cannot be Open";
+            } else {
+                file.read((char *) this, sizeof(*this));
+                cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                     << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                     << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                cout << endl;
+
+                while (!file.eof()) {
+                    if (phn == phoneno) {
                         showData();
                         flag = true;
                     }
@@ -436,150 +454,212 @@ void Employee::sortData() {
         cin >> ch;
 
         switch (ch) {
-            case 1:
-            {
-                file.seekg(0, ios::end);
-                fileSize = static_cast<int>(file.tellg());
-                objSize = static_cast<int>(sizeof(*this));
-                size = fileSize / objSize;
+            case 1: {
+                int size, fileSize, objSize, position;
+                Employee *ptr = NULL;
 
-                ptr = new Employee[size];
+                ifstream file;
+                file.open("file.dat", ios::in | ios::binary);
 
-                file.seekg(0, ios::beg);
+                if (isEmpty(file)) {
+                    cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+                } else {
+                    file.seekg(0, ios::end);
 
-                for (int i = 0; i < size; i++) {
-                    file.read((char *) &ptr[i], sizeof(*this));
-                }
-                file.close();
+                    fileSize = static_cast<int>(file.tellg());
+                    objSize = static_cast<int>(sizeof(*this));
+                    size = fileSize / objSize;
 
-                for (int i = 0; i < size; i++) {
-                    for (int j = i + 1; j < size; j++) {
-                        if (ptr[i].id > ptr[j].id) {
-                            swap(ptr[i], ptr[j]);
+                    ptr = new Employee[size];
+
+                    file.seekg(0, ios::beg);
+
+                    for (int i = 0; i < size; i++) {
+                        file.read((char *) &ptr[i], sizeof(*this));
+                    }
+                    file.close();
+
+                    for (int i = 0; i < size; i++) {
+                        for (int j = i + 1; j < size; j++) {
+                            if (ptr[i].id > ptr[j].id) {
+                                swap(ptr[i], ptr[j]);
+                            }
                         }
                     }
+
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+
+                    for (int i = 0; i < size; i++) {
+                        ptr[i].showData();
+                    }
+
+                    delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 }
-
-                cout << "\n\n\t======== Sorted Employee Details With Respect to EMPLOYEE ID ========\n\n";
-
-                for (int i = 0; i < size; i++) {
-                    ptr[i].showData();
-
-                    break;
-
-                }
-
-
-                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
             }
-            case 2:/*{
-                file.seekg(0, ios::end);
-                fileSize = static_cast<int>(file.tellg());
-                objSize = static_cast<int>(sizeof(*this));
-                size = fileSize / objSize;
 
-                ptr = new Employee[size];
+            case 2: {
+                int count = 0;
+                Employee *ptr = NULL;
 
-                file.seekg(0, ios::beg);
+                ifstream file;
+                ifstream file2;
 
-                for (int i = 0; i < size; i++) {
-                    file.read((char *) &ptr[i], sizeof(*this));
+                file2.open("file.dat", ios::in | ios::binary);
+                if (isEmpty(file2)) {
+                    cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+                } else {
+                    while (!file2.eof()) {
+
+                        file2.read((char *) this, sizeof(*this));
+                        count++;
+                    }
+                    count--;
                 }
-                file.close();
 
-                for (int i = 0; i < size; i++) {
-                    for (int j = i + 1; j < size; j++) {
-                        if (ptr[i].name > ptr[j].name) {
-                            swap(ptr[i], ptr[j]);
+
+                file.open("file.dat", ios::in | ios::binary);
+
+                if (isEmpty(file)) {
+                    cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+                } else {
+                    file.seekg(0, ios::end);
+
+                    fileSize = static_cast<int>(file.tellg());
+                    objSize = static_cast<int>(sizeof(*this));
+                    size = fileSize / objSize;
+
+                    ptr = new Employee[size];
+
+                    file.seekg(0, ios::beg);
+
+                    for (int i = 0; i < size; i++) {
+                        file.read((char *) &ptr[i], sizeof(*this));
+                    }
+                    file.close();
+
+
+//                    for (int i = 0; i < count; i++) {
+//                        for (int j = 0; j < count; j++) {
+//                            if (ptr[j - 1].name > ptr[j].name)
+//                                swap(ptr[i], ptr[j]);
+//                            }
+//                        }
+//                    }
+
+
+
+
+
+
+                    int i = 0, j = 0;
+                    for (i = 1; i < count; i++) {
+                        for (j = 1; j < count; j++) {
+                            if (strcmp(ptr[j - 1].name, ptr[j].name) > 0) {
+
+
+                                swap(ptr[j], ptr[j - 1]);
+
+                            }
                         }
                     }
+
+
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+
+                    for (int i = 0; i < size; i++) {
+                        ptr[i].showData();
+                    }
+
+                    delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 }
-
-                cout << "\n\n\t======== Sorted Employee Details With Respect to Name ========\n\n";
-
-                for (int i = 0; i < size; i++) {
-                    ptr[i].showData();
-
-                    break;
-
-                }
-
-
-                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
-            }*/
-            case 3:{
-                file.seekg(0, ios::end);
-                fileSize = static_cast<int>(file.tellg());
-                objSize = static_cast<int>(sizeof (*this));
-                size = fileSize / objSize;
+            }
+            case 3: {
+                int size, fileSize, objSize, position;
+                Employee *ptr = NULL;
 
-                ptr = new Employee[size];
+                ifstream file;
+                file.open("file.dat", ios::in | ios::binary);
 
-                file.seekg(0, ios::beg);
+                if (isEmpty(file)) {
+                    cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+                } else {
+                    file.seekg(0, ios::end);
 
-                for (int i = 0; i < size; i++) {
-                    file.read((char *) &ptr[i], sizeof(*this));
-                }
-                file.close();
+                    fileSize = static_cast<int>(file.tellg());
+                    objSize = static_cast<int>(sizeof(*this));
+                    size = fileSize / objSize;
 
-                for (int i = 0; i < size; i++) {
-                    for (int j = i + 1; j < size; j++) {
-                        if (ptr[i].age > ptr[j].age) {
-                            swap(ptr[i], ptr[j]);
+                    ptr = new Employee[size];
+
+                    file.seekg(0, ios::beg);
+
+                    for (int i = 0; i < size; i++) {
+                        file.read((char *) &ptr[i], sizeof(*this));
+                    }
+                    file.close();
+
+                    for (int i = 0; i < size; i++) {
+                        for (int j = i + 1; j < size; j++) {
+                            if (ptr[i].age < ptr[j].age) {
+                                swap(ptr[i], ptr[j]);
+                            }
                         }
                     }
+
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+
+                    for (int i = 0; i < size; i++) {
+                        ptr[i].showData();
+                    }
+
+                    delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 }
-
-                cout << "\n\n\t======== Sorted Employee Details With Respect to Age ========\n\n";
-
-                for (int i = 0; i < size; i++) {
-                    ptr[i].showData();
-
-                    break;
-
-                }
-
-
-                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
             }
 
             case 4: {
-                file.seekg(0, ios::end);
-                fileSize = static_cast<int>(file.tellg());
-                objSize = static_cast<int>(sizeof(*this));
-                size = fileSize / objSize;
+                int size, fileSize, objSize, position;
+                Employee *ptr = NULL;
 
-                ptr = new Employee[size];
+                ifstream file;
+                file.open("file.dat", ios::in | ios::binary);
 
-                file.seekg(0, ios::beg);
+                if (isEmpty(file)) {
+                    cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+                } else {
+                    file.seekg(0, ios::end);
 
-                for (int i = 0; i < size; i++) {
-                    file.read((char *) &ptr[i], sizeof(*this));
-                }
-                file.close();
+                    fileSize = static_cast<int>(file.tellg());
+                    objSize = static_cast<int>(sizeof(*this));
+                    size = fileSize / objSize;
 
-                for (int i = 0; i < size; i++) {
-                    for (int j = i + 1; j < size; j++) {
-                        if (ptr[i].salary < ptr[j].salary) {
-                            swap(ptr[i], ptr[j]);
+                    ptr = new Employee[size];
+
+                    file.seekg(0, ios::beg);
+
+                    for (int i = 0; i < size; i++) {
+                        file.read((char *) &ptr[i], sizeof(*this));
+                    }
+                    file.close();
+
+                    for (int i = 0; i < size; i++) {
+                        for (int j = i + 1; j < size; j++) {
+                            if (ptr[i].id > ptr[j].id) {
+                                swap(ptr[i], ptr[j]);
+                            }
                         }
                     }
+
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+
+                    for (int i = 0; i < size; i++) {
+                        ptr[i].showData();
+                    }
+
+                    delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 }
-
-                cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
-
-                for (int i = 0; i < size; i++) {
-                    ptr[i].showData();
-
-                    break;
-
-                }
-
-
-                delete[] ptr;   // Explicitly Delete Memory Location From Heap.
                 break;
             }
             default:
@@ -596,6 +676,7 @@ int loginprocess() {
 
     string uname, pass;
     int ip;
+
     // system("cls");  !! causing error
     cout << "\n\n <================= Employee Record Management System =================>\n";
     cout << "           .--.                   .---.\n"
@@ -698,9 +779,10 @@ void mgrmenu() {
     cout << "\t3 : Search Employees Records\n";
     cout << "\t4 : Update Employee Records\n";
     cout << "\t5 : Delete Employee Records\n";
-    cout << "\t6 : Sort Employee Records w.r.t Salary\n";
+    cout << "\t6 : Sort Employee Records \n";
     cout << "\t7 : Generate Reports\n";
-    cout << "\t8 : Logout \n";
+    cout << "\t8 : Payslip Generator";
+    cout << "\t9 : Logout \n";
     cout << "\tEnter Your Choice : \n\n\n";
     cin >> choice;
     operations(choice);
@@ -844,30 +926,30 @@ void operations(int ch) {
             cout << "1.R&D\n2.Testing\n3.Training\n4Sales\n5.Accounts\n";
             cin >> dp;
 
-                switch (dp) {
-                    case 1:
-                        filedata.randddep();
-                        break;
-                    case 2:
-                        // Ep.testdep();
-                        break;
-                    case 3:
-                        // Ep.traindep();
-                        break;
-                    case 4:
-                        // Ep.salesdep();
-                        break;
-                    case 5:
-                        //  Ep.accdep();
-                        break;
-                    default:
-                        cout << "Please give correct input " << endl;
-                }
-
-
-
+            switch (dp) {
+                case 1:
+                    filedata.randddep();
+                    break;
+                case 2:
+                    filedata.testdep();
+                    break;
+                case 3:
+                    filedata.traindep();
+                    break;
+                case 4:
+                    filedata.salesdep();
+                    break;
+                case 5:
+                    filedata.accdep();
+                    break;
+                default:
+                    cout << "Please give correct input " << endl;
+            }
             break;
-        case 8:
+
+        case 8 :filedata.payslip_generator();
+            break;
+        case 9:
             cout << "\n\tThank You For Using This Application\n";
             exit(0);
             check = false;
@@ -878,6 +960,64 @@ void operations(int ch) {
     }
     cout << "\n";
     cout << "\t" << system("pause");
+}
+
+void Employee::payslip_generator() {
+
+    int input;
+    fstream file;
+    float basic_salary, hra, da, i_tax, net_salary;
+    file.open(fileName, ios::in | ios::binary);
+    cout << "Enter the Employee ID:";
+    cin >> input;
+    flag = validateInput();
+    if(flag){
+        cout<<"Enter correct id!!";
+        mgrmenu();
+    }else{
+
+
+
+
+        if (!file) {
+            cout << "\tFile Cannot be Open";
+        } else {
+            file.read((char *) this, sizeof(*this));
+            while (!file.eof()) {
+                if (input == id) {
+
+
+                    basic_salary = salary;
+                    hra = 800;
+                    da = 0.25 * basic_salary;
+                    i_tax = 0.15 * basic_salary;
+                    net_salary = basic_salary + da + hra - i_tax;
+
+                    cout<<"\n -------------------------------------- ";
+                    cout<<"\n Employee Id     : "<<id;
+                    cout<<"\n Employee Name   : "<<name;
+                    cout<<"\n Basic Salary    : "<<basic_salary;
+                    cout<<"\n HRA             : "<<hra;
+                    cout<<"\n DA              : "<<da;
+                    cout<<"\n I-Tax           : "<<i_tax;
+                    cout<<"\n Net Salary      : "<<net_salary;
+                    cout<<"\n -------------------------------------- ";
+                    flag = true;
+                }
+                file.read((char *) this, sizeof(*this));
+            }
+
+            file.close();
+
+            if (!flag) {
+                cout << "\tRecord For This ID Does Not Exist";
+            }
+        }
+    }
+
+
+
+
 }
 
 
@@ -905,12 +1045,12 @@ int main() {
 
 void Employee::randddep() {
     ifstream file;
-    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal= 0, lowsal = 0;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal = 0, lowsal = 0;
     int x, i;
     char title[20] = "R and D Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("report_generated.txt", ios::out); //writes to the output file
+    report.open("C://ERMS//rnd_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
@@ -926,16 +1066,20 @@ void Employee::randddep() {
         } else {
             file.read((char *) this, sizeof(*this));
 
-            report << "\n\nEmployee ID\tName\tAge\tGender\tRole\tDepartment\tSalary\tPhoneno\tCity\n";
+            report << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                   << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                   << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            report << "\n";
 
             while (!file.eof()) {
 
                 if (!strcmp(department, "R&D")) {
                     noofemployee++;
 
-                    report << id << "\t" << name << "\t" << age << "\t" << gender << "\t" << post << "\t" << department
-                    << "\t" << salary
-                    << "\t" << phoneno << "\t" << city << "\n";
+                    report << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8)
+                           << left << gender
+                           << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+                           << setw(14) << phoneno << setw(15) << city << endl;
 
                     ttlsal += salary;
                     ttlage += age;
@@ -966,26 +1110,355 @@ void Employee::randddep() {
             report << "no of male employees = " << maleemp;
             report << endl;
             report << "no of female employees = " << femaleemp << endl;
-            report << "Average salary" << ttlsal / noofemployee << endl;
+            report << "Average salary = " << ttlsal / noofemployee << endl;
             report << "Average Age = " << ttlage / noofemployee << endl;
+            cout << endl;
             report << "Highest Salary = " << highsal << endl;
             report << "Lowest Salary = " << lowsal << endl;
             report.close();
             file.close();
-            cout<<"Report generated successfully !";
+            cout << "Report generated successfully !";
             return;
         }
 
 
+    }
+}
+
+
+void Employee::testdep() {
+    ifstream file;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal = 0, lowsal = 0;
+    int x, i;
+    char title[20] = "Testing Department";
+    file.open(fileName, ios::in | ios::binary);
+    fstream report;
+    report.open("C://ERMS//test_dept_report.txt", ios::out); //writes to the output file
+    //report.getline(title,25,'\n');
+    //if(report.fail())
+    //    break;
+    //x=strlen(title);
+    report << title;
+    report << endl;
+
+    if (!file) {
+        cout << "\tFile can not Open";
+    } else {
+        if (isEmpty(file)) {
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+        } else {
+            file.read((char *) this, sizeof(*this));
+
+            report << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                   << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+                   << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            report << "\n";
+
+            while (!file.eof()) {
+
+                if (!strcmp(department, "Testing")) {
+                    noofemployee++;
+
+                    report << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8)
+                           << left << gender
+                           << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+                           << setw(14) << phoneno << setw(15) << city << endl;
+
+                    ttlsal += salary;
+                    ttlage += age;
+
+                    if (!strcmp(gender, "M")) {
+                        maleemp++;
+                    } else {
+                        femaleemp++;
+                    }
+
+                    if (noofemployee == 1) {
+                        highsal = salary;
+                        lowsal = salary;
+                    }
+                    if (salary > highsal) {
+                        highsal = salary;
+                    }
+                    if (salary < lowsal) {
+                        lowsal = salary;
+                    }
+                }
+
+                file.read((char *) this, sizeof(*this));
+            }
+            report << endl;
+            report << "Total no of employees = " << noofemployee;
+            report << endl;
+            report << "No of male employees = " << maleemp;
+            report << endl;
+            report << "No of female employees = " << femaleemp << endl;
+            report << "Average salary = " << ttlsal / noofemployee << endl;
+            report << "Average Age = " << ttlage / noofemployee << endl;
+            cout << endl;
+            report << "Highest Salary = " << highsal << endl;
+            report << "Lowest Salary = " << lowsal << endl;
+            report.close();
+            file.close();
+            cout << "Report generated successfully !";
+            mgrmenu();
         }
+
+
+    }
+}
+
+void Employee::traindep() {
+
+    ifstream file;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal = 0, lowsal = 0;
+    int x, i;
+    char title[20] = "Training Department";
+    file.open(fileName, ios::in | ios::binary);
+    fstream report;
+    report.open("C://ERMS//training_dept_report.txt", ios::out); //writes to the output file
+    //report.getline(title,25,'\n');
+    //if(report.fail())
+    //    break;
+    //x=strlen(title);
+    report << title;
+    report << endl;
+
+    if (!file) {
+        cout << "\tFile can not Open";
+    } else {
+        if (isEmpty(file)) {
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+        } else {
+            file.read((char *) this, sizeof(*this));
+
+            report << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+            << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+            << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            report << "\n";
+
+            while (!file.eof()) {
+
+                if (!strcmp(department, "Training")) {
+                    noofemployee++;
+
+                    report << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8)
+                    << left << gender
+                    << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+                    << setw(14) << phoneno << setw(15) << city << endl;
+
+                    ttlsal += salary;
+                    ttlage += age;
+
+                    if (!strcmp(gender, "M")) {
+                        maleemp++;
+                    } else {
+                        femaleemp++;
+                    }
+
+                    if (noofemployee == 1) {
+                        highsal = salary;
+                        lowsal = salary;
+                    }
+                    if (salary > highsal) {
+                        highsal = salary;
+                    }
+                    if (salary < lowsal) {
+                        lowsal = salary;
+                    }
+                }
+
+                file.read((char *) this, sizeof(*this));
+            }
+            report << endl;
+            report << "Total no of employees = " << noofemployee;
+            report << endl;
+            report << "No of male employees = " << maleemp;
+            report << endl;
+            report << "No of female employees = " << femaleemp << endl;
+            report << "Average salary = " << ttlsal / noofemployee << endl;
+            report << "Average Age = " << ttlage / noofemployee << endl;
+            cout << endl;
+            report << "Highest Salary = " << highsal << endl;
+            report << "Lowest Salary = " << lowsal << endl;
+            report.close();
+            file.close();
+            cout << "Report generated successfully !";
+            mgrmenu();
+        }
+
+
+    }
+}
+
+void Employee::accdep() {
+
+    ifstream file;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal = 0, lowsal = 0;
+    int x, i;
+    char title[20] = "Accounts Department";
+    file.open(fileName, ios::in | ios::binary);
+    fstream report;
+    report.open("C://ERMS//acc_dept_report.txt", ios::out); //writes to the output file
+    //report.getline(title,25,'\n');
+    //if(report.fail())
+    //    break;
+    //x=strlen(title);
+    report << title;
+    report << endl;
+
+    if (!file) {
+        cout << "\tFile can not Open";
+    } else {
+        if (isEmpty(file)) {
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+        } else {
+            file.read((char *) this, sizeof(*this));
+
+            report << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+            << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+            << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            report << "\n";
+
+            while (!file.eof()) {
+
+                if (!strcmp(department, "Accounts")) {
+                    noofemployee++;
+
+                    report << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8)
+                    << left << gender
+                    << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+                    << setw(14) << phoneno << setw(15) << city << endl;
+
+                    ttlsal += salary;
+                    ttlage += age;
+
+                    if (!strcmp(gender, "M")) {
+                        maleemp++;
+                    } else {
+                        femaleemp++;
+                    }
+
+                    if (noofemployee == 1) {
+                        highsal = salary;
+                        lowsal = salary;
+                    }
+                    if (salary > highsal) {
+                        highsal = salary;
+                    }
+                    if (salary < lowsal) {
+                        lowsal = salary;
+                    }
+                }
+
+                file.read((char *) this, sizeof(*this));
+            }
+            report << endl;
+            report << "Total no of employees = " << noofemployee;
+            report << endl;
+            report << "No of male employees = " << maleemp;
+            report << endl;
+            report << "No of female employees = " << femaleemp << endl;
+            report << "Average salary = " << ttlsal / noofemployee << endl;
+            report << "Average Age = " << ttlage / noofemployee << endl;
+            cout << endl;
+            report << "Highest Salary = " << highsal << endl;
+            report << "Lowest Salary = " << lowsal << endl;
+            report.close();
+            file.close();
+            cout << "Report generated successfully !";
+            mgrmenu();
+        }
+
+
     }
 
 
 
-void Employee::testdep() {}
+}
 
-void Employee::traindep() {}
+void Employee::salesdep() {
 
-void Employee::accdep() {}
+    ifstream file;
+    int noofemployee = 0, maleemp = 0, femaleemp = 0, ttlsal = 0, ttlage = 0, highsal = 0, lowsal = 0;
+    int x, i;
+    char title[20] = "Sales Department";
+    file.open(fileName, ios::in | ios::binary);
+    fstream report;
+    report.open("C://ERMS//sales_dept_report.txt", ios::out); //writes to the output file
+    //report.getline(title,25,'\n');
+    //if(report.fail())
+    //    break;
+    //x=strlen(title);
+    report << title;
+    report << endl;
 
-void Employee::salesdep() {}
+    if (!file) {
+        cout << "\tFile can not Open";
+    } else {
+        if (isEmpty(file)) {
+            cout << "\n\tYour File is Empty! No Record is Available to Show\n";
+        } else {
+            file.read((char *) this, sizeof(*this));
+
+            report << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+            << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left << "Department"
+            << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+            report << "\n";
+
+            while (!file.eof()) {
+
+                if (!strcmp(department, "Sales")) {
+                    noofemployee++;
+
+                    report << setw(12) << left << id << setw(20) << left << name << setw(5) << left << age << setw(8)
+                    << left << gender
+                    << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
+                    << setw(14) << phoneno << setw(15) << city << endl;
+
+                    ttlsal += salary;
+                    ttlage += age;
+
+                    if (!strcmp(gender, "M")) {
+                        maleemp++;
+                    } else {
+                        femaleemp++;
+                    }
+
+                    if (noofemployee == 1) {
+                        highsal = salary;
+                        lowsal = salary;
+                    }
+                    if (salary > highsal) {
+                        highsal = salary;
+                    }
+                    if (salary < lowsal) {
+                        lowsal = salary;
+                    }
+                }
+
+                file.read((char *) this, sizeof(*this));
+            }
+            report << endl;
+            report << "Total no of employees = " << noofemployee;
+            report << endl;
+            report << "No of male employees = " << maleemp;
+            report << endl;
+            report << "No of female employees = " << femaleemp << endl;
+            report << "Average salary = " << ttlsal / noofemployee << endl;
+            report << "Average Age = " << ttlage / noofemployee << endl;
+            cout << endl;
+            report << "Highest Salary = " << highsal << endl;
+            report << "Lowest Salary = " << lowsal << endl;
+            report.close();
+            file.close();
+            cout << "Report generated successfully !";
+            mgrmenu();
+        }
+
+
+    }
+
+
+
+}
