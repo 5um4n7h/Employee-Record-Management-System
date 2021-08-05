@@ -86,7 +86,6 @@ public:
     void accdep();
 
     void payslip_generator();
-    int duplid(int ids);
 };
 
 
@@ -94,7 +93,6 @@ public:
 //           DEFINATION OF MEMBER FUNCTIONS OF CLASS
 //****************************************************************
 void Employee::getData() {
-    int idinp;
     bool flag = false;
 
     label1:
@@ -108,13 +106,8 @@ void Employee::getData() {
 
     label2:
     cout << "\tEnter Employee Unique ID : ";
-    cin >> idinp;
-    int x= duplid(idinp);
-    cout<<"Returned to getData()";
-    if(x==1){
-        operations(1);
-    }
-   // flag = validateInput();
+    cin >> id;
+    flag = validateInput();
     if (flag)
         goto label2;
 
@@ -1028,27 +1021,6 @@ void Employee::payslip_generator() {
 }
 
 
-int Employee::duplid(int ids) {
-    fstream file;
-    file.open(fileName, ios::in | ios::binary);
-    if (!file) {
-        cout << "";
-    } else {
-        while (!file.eof()) {
-            if (ids == id) {
-                cout<<"Employee with this ID already exist\n Please try other ID\n";
-                file.close();
-                return 1;
-            }
-            file.read((char *) this, sizeof(*this));
-        }
-
-    }
-    file.close();
-    return 0;
-}
-
-
 //***************************************************************
 //    	THE MAIN FUNCTION OF PROGRAM
 //****************************************************************
@@ -1078,7 +1050,7 @@ void Employee::randddep() {
     char title[20] = "R and D Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("C://ERMS//rnd_dept_report.txt", ios::out); //writes to the output file
+    report.open("rnd_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
@@ -1161,7 +1133,7 @@ void Employee::testdep() {
     char title[20] = "Testing Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("C://ERMS//test_dept_report.txt", ios::out); //writes to the output file
+    report.open("test_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
@@ -1244,7 +1216,7 @@ void Employee::traindep() {
     char title[20] = "Training Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("C://ERMS//training_dept_report.txt", ios::out); //writes to the output file
+    report.open("training_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
@@ -1327,7 +1299,7 @@ void Employee::accdep() {
     char title[20] = "Accounts Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("C://ERMS//acc_dept_report.txt", ios::out); //writes to the output file
+    report.open("acc_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
@@ -1413,7 +1385,7 @@ void Employee::salesdep() {
     char title[20] = "Sales Department";
     file.open(fileName, ios::in | ios::binary);
     fstream report;
-    report.open("C://ERMS//sales_dept_report.txt", ios::out); //writes to the output file
+    report.open("sales_dept_report.txt", ios::out); //writes to the output file
     //report.getline(title,25,'\n');
     //if(report.fail())
     //    break;
