@@ -86,6 +86,7 @@ public:
     void accdep();
 
     void payslip_generator();
+    int duplid(int ids);
 };
 
 
@@ -107,6 +108,10 @@ void Employee::getData() {
     label2:
     cout << "\tEnter Employee Unique ID : ";
     cin >> id;
+    int x= duplid(id);
+    if(x==1){
+        operations(1);
+    }
     flag = validateInput();
     if (flag)
         goto label2;
@@ -1018,6 +1023,24 @@ void Employee::payslip_generator() {
 
 
 
+}
+
+
+int Employee::duplid(int ids) {
+    fstream file;
+    file.open(fileName, ios::in | ios::binary);
+    if (!file) {
+        cout << "";
+    } else {
+        while (!file.eof()) {
+            if (ids == id) {
+                cout<<"Employee with this ID already exist\n Please try other ID\n";
+                return 1;
+            }
+        }
+
+    }
+    return 0;
 }
 
 
