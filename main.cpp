@@ -627,7 +627,7 @@ void Employee::sortData() {
                         }
                     }
                     cout<< "-----------------------------------------------------------------------------------------------------------------\n";
-                    cout << "\nSorted Employee Details With Respect to Salary\n";
+                    cout << "\nSorted Employee Details With Respect to Employee ID\n";
                     cout<< "-----------------------------------------------------------------------------------------------------------------\n";
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -716,7 +716,7 @@ void Employee::sortData() {
                     }
 
 
-                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Name ========\n\n";
 
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -780,7 +780,7 @@ void Employee::sortData() {
                         }
                     }
 
-                    cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+                    cout << "\n\n\t======== Sorted Employee Details With Respect to Age ========\n\n";
 
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -838,7 +838,7 @@ void Employee::sortData() {
 
                     for (int i = 0; i < size; i++) {
                         for (int j = i + 1; j < size; j++) {
-                            if (ptr[i].id > ptr[j].id) {
+                            if (ptr[i].salary > ptr[j].salary) {
                                 swap(ptr[i], ptr[j]);
                             }
                         }
