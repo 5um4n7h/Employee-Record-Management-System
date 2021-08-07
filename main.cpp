@@ -465,7 +465,7 @@ void Employee::deleteData(int input) {
 
     if (!fin) {
         cout << "\tFile Cannot Open Successfully!";
-        cout << '\n' << "Press any key to continue...";
+        cout << '\n' << "Press any key to continue...\n";
         cin.ignore();
         cin.get();
 
@@ -476,7 +476,7 @@ void Employee::deleteData(int input) {
         }
     } else {
         fin.read((char *) this, sizeof(*this));
-        fout.open("tempfile.dat", ios::out | ios::binary);
+        fout.open("C://ERMS/tempfile.dat", ios::out | ios::binary);
         while (!fin.eof()) {
             if (input != id) {
                 fout.write((char *) this, sizeof(*this));
@@ -488,7 +488,7 @@ void Employee::deleteData(int input) {
 
         fstream f1, f2;
         f1.open(fileName, ios::in | ios::binary);
-        f2.open("tempfile.dat", ios::in | ios::binary);
+        f2.open("C://ERMS/tempfile.dat", ios::in | ios::binary);
 
         while (true) {
             c1 = f1.get();
@@ -524,12 +524,12 @@ void Employee::deleteData(int input) {
             cin >> choice;
             if (choice == 1) {
                 remove(fileName);
-                rename("tempfile.dat", fileName);
+                rename("C://ERMS/tempfile.dat", fileName);
                 cout << "\n\n\tRecord is Deleted Successfully";
 
 
             } else if (choice == 2) {
-                remove("tempfile.dat");
+                remove("C://ERMS/tempfile.dat");
             } else {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -540,7 +540,7 @@ void Employee::deleteData(int input) {
             Employee ep;
             ep.id_validator();
 
-            cout << '\n' << "Press any key to continue...";
+            cout << '\n' << "Press any key to continue...\n";
             cin.ignore();
             cin.get();
 
@@ -635,7 +635,7 @@ void Employee::sortData() {
 
                     delete[] ptr;   // Explicitly Delete Memory Location From Heap.
 
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to continue...\n";
                     cin.ignore();
                     cin.get();
 
@@ -724,7 +724,7 @@ void Employee::sortData() {
 
                     delete[] ptr;   // Explicitly Delete Memory Location From Heap.
 
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to continue...\n";
                     cin.ignore();
                     cin.get();
 
@@ -746,7 +746,7 @@ void Employee::sortData() {
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to continue...\n";
                     cin.ignore();
                     cin.get();
 
@@ -787,7 +787,7 @@ void Employee::sortData() {
                     }
 
                     delete[] ptr;   // Explicitly Delete Memory Location From Heap.
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to continue...\n";
                     cin.ignore();
                     cin.get();
 
@@ -810,7 +810,7 @@ void Employee::sortData() {
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Available to Show\n";
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to \n";
                     cin.ignore();
                     cin.get();
 
@@ -851,7 +851,7 @@ void Employee::sortData() {
                     }
 
                     delete[] ptr;   // Explicitly Delete Memory Location From Heap.
-                    cout << '\n' << "Press any key to continue...";
+                    cout << '\n' << "Press any key to continue...\n";
                     cin.ignore();
                     cin.get();
 
@@ -936,7 +936,7 @@ void Employee::payslip_generator() {
 
             }
 
-            cout << '\n' << "Press any key to continue...";
+            cout << '\n' << "Press any key to continue...\n";
             cin.ignore();
             cin.get();
 
