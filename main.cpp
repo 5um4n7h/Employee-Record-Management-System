@@ -174,15 +174,7 @@ void Employee::getData() {
 void Employee::writeFile() {
     if (name == "no name" && id == 0) {
         cout << "\tEmployee Record is not initalized" << endl;
-        cout << '\n' << "Press any key to continue...\n";
-        cin.ignore();
-        cin.get();
 
-        if (logintype == 1) {
-            empmenu();
-        } else {
-            mgrmenu();
-        }
     } else {
         fstream file;
         file.open(fileName, ios::out | ios::app | ios::binary);
@@ -194,15 +186,6 @@ void Employee::writeFile() {
         if (!file.good()) {
             // For Check Any Error After Writing the file. For Example File Memory Full, File Format Errors.
             cout << "\tError occurred at writing time!" << endl;
-            cout << '\n' << "Press any key to continue...\n";
-            cin.ignore();
-            cin.get();
-
-            if (logintype == 1) {
-                empmenu();
-            } else {
-                mgrmenu();
-            }
         }
     }
 }
@@ -280,7 +263,7 @@ void Employee::searchData() {
     int ch;
     char nm[100];
     int input;
-    long int phn;
+    long long int phn;
     fstream file;
     file.open(fileName, ios::in | ios::binary);
     cout << "Enter the key on which you want to search\n";
@@ -372,6 +355,8 @@ void Employee::searchData() {
             break;
         case 3: {
             cout << "Enter the phone number:";
+            cin>>phn;
+
             cout << '\n' << "Press any key to continue...\n";
             cin.ignore();
             cin.get();
