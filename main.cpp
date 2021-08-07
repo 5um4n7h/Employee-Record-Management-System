@@ -248,6 +248,15 @@ void Employee::readFile() {
                 showData();
                 file.read((char *) this, sizeof(*this));
             }
+            cout << '\n' << "Press any key to continue...\n";
+            cin.ignore();
+            cin.get();
+
+            if (logintype == 1) {
+                empmenu();
+            } else {
+                mgrmenu();
+            }
 
             file.close();
         }
@@ -261,15 +270,7 @@ void Employee::showData() {
          << setw(20) << left << post << setw(15) << left << department << setw(10) << salary
          << setw(14) << phoneno << setw(15) << city << endl;
 
-    cout << '\n' << "Press any key to continue...\n";
-    cin.ignore();
-    cin.get();
 
-    if (logintype == 1) {
-        empmenu();
-    } else {
-        mgrmenu();
-    }
 
 
 }
