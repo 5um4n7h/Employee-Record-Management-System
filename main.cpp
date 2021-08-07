@@ -1661,6 +1661,9 @@ int main() {
     cout << "\n\n1. Employee Login \n2. Manager Log in \n3. Exit \n\n";
     cout << "Enter your choice :  \n";
     cin >> logintype;
+    flag = validateInput();
+    if(flag)
+        main();
     switch (logintype) {
 
         case 1: {
