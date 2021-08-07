@@ -582,11 +582,12 @@ void Employee::sortData() {
     Employee *ptr = NULL;
 
     ifstream file;
-    file.open("file.dat", ios::in | ios::binary);
+    file.open(fileName, ios::in | ios::binary);
 
     if (isEmpty(file)) {
         cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
     } else {
+        file.close();
         cout << "\n Enter the data on which records are to be sorted:";
 
         cout << "\n 1.Employee ID\n 2.Name \n 3.Age\n 4.Salary\n";
@@ -598,7 +599,7 @@ void Employee::sortData() {
                 Employee *ptr = NULL;
 
                 ifstream file;
-                file.open("file.dat", ios::in | ios::binary);
+                file.open(fileName, ios::in | ios::binary);
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
@@ -657,7 +658,7 @@ void Employee::sortData() {
                 ifstream file;
                 ifstream file2;
 
-                file2.open("file.dat", ios::in | ios::binary);
+                file2.open(fileName, ios::in | ios::binary);
                 if (isEmpty(file2)) {
                     cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
                 } else {
@@ -670,7 +671,7 @@ void Employee::sortData() {
                 }
 
 
-                file.open("file.dat", ios::in | ios::binary);
+                file.open(fileName, ios::in | ios::binary);
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Available to Show\n";
@@ -743,7 +744,7 @@ void Employee::sortData() {
                 Employee *ptr = NULL;
 
                 ifstream file;
-                file.open("file.dat", ios::in | ios::binary);
+                file.open(fileName, ios::in | ios::binary);
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
@@ -807,7 +808,7 @@ void Employee::sortData() {
                 Employee *ptr = NULL;
 
                 ifstream file;
-                file.open("file.dat", ios::in | ios::binary);
+                file.open(fileName, ios::in | ios::binary);
 
                 if (isEmpty(file)) {
                     cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
