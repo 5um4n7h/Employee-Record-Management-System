@@ -355,17 +355,6 @@ void Employee::searchData() {
             break;
         case 3: {
             cout << "Enter the phone number:";
-            cin>>phn;
-
-            cout << '\n' << "Press any key to continue...\n";
-            cin.ignore();
-            cin.get();
-
-            if (logintype == 1) {
-                empmenu();
-            } else {
-                mgrmenu();
-            }
             cin >> phn;
             if (!file) {
                 cout << "\tFile Cannot be Open";
