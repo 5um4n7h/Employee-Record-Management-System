@@ -19,8 +19,11 @@ using namespace std;
 bool validateInput();               // fuction that Validate User Input & Prints Error.
 bool isEmpty(ifstream &file);       // function that checks file is empty or not.
 void operations(int ch);
+
 void empmenu();
+
 void mgrmenu();
+
 int main();
 
 
@@ -254,8 +257,6 @@ void Employee::showData() {
          << setw(14) << phoneno << setw(15) << city << endl;
 
 
-
-
 }
 
 void Employee::searchData() {
@@ -307,7 +308,7 @@ void Employee::searchData() {
         }
             break;
         case 2:
-            cout <<"Enter the ID:";
+            cout << "Enter the ID:";
             cin >> input;
 
             if (!file) {
@@ -626,9 +627,14 @@ void Employee::sortData() {
                             }
                         }
                     }
-                    cout<< "-----------------------------------------------------------------------------------------------------------------\n";
+                    cout<< "\n-----------------------------------------------------------------------------------------------------------------\n";
                     cout << "\nSorted Employee Details With Respect to Employee ID\n";
                     cout<< "-----------------------------------------------------------------------------------------------------------------\n";
+                    cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                         << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left
+                         << "Department"
+                         << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                    cout<< "\n-----------------------------------------------------------------------------------------------------------------";
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
                     }
@@ -717,6 +723,11 @@ void Employee::sortData() {
 
 
                     cout << "\n\n\t======== Sorted Employee Details With Respect to Name ========\n\n";
+                    cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                    << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left
+                    << "Department"
+                    << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                    cout<<"\n";
 
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -781,6 +792,11 @@ void Employee::sortData() {
                     }
 
                     cout << "\n\n\t======== Sorted Employee Details With Respect to Age ========\n\n";
+                    cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                    << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left
+                    << "Department"
+                    << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                    cout<<"\n";
 
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -845,6 +861,11 @@ void Employee::sortData() {
                     }
 
                     cout << "\n\n\t======== Sorted Employee Details With Respect to Salary ========\n\n";
+                    cout << setw(12) << left << "Employee ID" << setw(20) << left << "Name" << setw(5) << left << "Age"
+                    << setw(8) << left << "Gender" << setw(20) << left << "Role" << setw(15) << left
+                    << "Department"
+                    << setw(10) << "Salary" << setw(15) << "Phoneno" << setw(14) << "City";
+                    cout<<"\n";
 
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
@@ -1582,7 +1603,7 @@ void operations(int ch) {
         case 7: //report generation
             cout << "Enter the Depart name of which you want the report\n";
             cout << "1.R&D\n2.Testing\n3.Training\n4.Sales\n5.Accounts\n6.Back to Menu\n7.Exit\n";
-            cout<<"\nEnter your choice: ";
+            cout << "\nEnter your choice: ";
             cin >> dp;
 
             switch (dp) {
@@ -1661,7 +1682,7 @@ int main() {
     cout << "Enter your choice :  \n";
     cin >> logintype;
     flag = validateInput();
-    if(flag)
+    if (flag)
         main();
     switch (logintype) {
 
@@ -1742,7 +1763,6 @@ int main() {
             cout << "\nInvalid input ! try again !";
             main();
     }
-
 
 
 }
