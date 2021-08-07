@@ -626,11 +626,9 @@ void Employee::sortData() {
                             }
                         }
                     }
-                    cout
-                            << "-----------------------------------------------------------------------------------------------------------------";
+                    cout<< "-----------------------------------------------------------------------------------------------------------------\n";
                     cout << "\nSorted Employee Details With Respect to Salary\n";
-                    cout
-                            << "-----------------------------------------------------------------------------------------------------------------";
+                    cout<< "-----------------------------------------------------------------------------------------------------------------\n";
                     for (int i = 0; i < size; i++) {
                         ptr[i].showData();
                     }
@@ -811,7 +809,7 @@ void Employee::sortData() {
                 file.open(fileName, ios::in | ios::binary);
 
                 if (isEmpty(file)) {
-                    cout << "\n\tYour File is Empty! No Record is Avialable to Show\n";
+                    cout << "\n\tYour File is Empty! No Record is Available to Show\n";
                     cout << '\n' << "Press any key to continue...";
                     cin.ignore();
                     cin.get();
